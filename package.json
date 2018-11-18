@@ -1,0 +1,39 @@
+{
+  "name": "@slicemenice/video-player",
+  "version": "1.0.0",
+  "description": "A lightweight, extensible HTML5 video player",
+  "main": "dist/videoPlayer.js",
+  "module": "dist/videoPlayer.es.js",
+  "files": [
+    "dist"
+  ],
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "n-clean ./dist/ && rollup -c && rollup -c rollup.config.prod.js",
+    "release-to-branch": "branch-release -s build",
+    "watch": "rollup -cw"
+  },
+  "keywords": [],
+  "author": "SliceMeNice",
+  "contributors": [
+    {
+      "name": "Stefan Ullinger",
+      "email": "stefan@slicemenice.de"
+    }
+  ],
+  "license": "ISC",
+  "dependencies": {
+    "@types/loadjs": "3.5.0"
+  },
+  "devDependencies": {
+    "branch-release": "1.0.3",
+    "loadjs": "3.5.4",
+    "npm-build-tools": "2.2.5",
+    "rollup": "0.67.0",
+    "rollup-plugin-commonjs": "9.2.0",
+    "rollup-plugin-node-resolve": "3.4.0",
+    "rollup-plugin-typescript2": "0.17.2",
+    "rollup-plugin-uglify": "6.0.0",
+    "typescript": "3.1.6"
+  }
+}
