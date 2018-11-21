@@ -1,9 +1,12 @@
 import { PlayerOptions, DEFAULTS as defaultPlayerOptions } from './playerOptions';
-import { extendOptions } from './utilities/optionUtilities';
 import { PlayerSource } from './playerSource';
 import { Playback } from './playback';
 import { EventEmitter } from './eventEmitter';
 import * as _loadjs from 'loadjs';
+
+import * as _mimeTypeUtilities from './utilities/mimeTypeUtilities';
+import * as _optionUtilities from './utilities/optionUtilities';
+import * as _typeUtilities from './utilities/typeUtilities';
 
 export class Player extends EventEmitter {
 	protected options: PlayerOptions;
@@ -21,7 +24,7 @@ export class Player extends EventEmitter {
 			throw new Error('Parameter videoElement should be of type HTMLVideoElement');
 		}
 
-		this.options = extendOptions<PlayerOptions>({}, defaultPlayerOptions, options || {});
+		this.options = _optionUtilities.extendOptions<PlayerOptions>({}, defaultPlayerOptions, options || {});
 
 		if (this.options.sources.length) {
 			this.setPlayerSource()
@@ -126,3 +129,6 @@ export { Browser } from './browser';
 export { Playback } from './playback';
 export { PlaybackEvents } from './playbackEvents';
 export const loadjs = _loadjs;
+export const MimeTypeUtilities = _mimeTypeUtilities;
+export const OptionUtilities = _optionUtilities;
+export const TypeUtilities = _typeUtilities;
