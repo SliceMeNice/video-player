@@ -21,10 +21,14 @@ export declare class Player extends EventEmitter {
     protected resetPlayback(): void;
     destroy(): void;
 }
-export { HTML5_VIDEO_MIMETYPES, HTML5VideoPlayback } from './playbacks/html5Video';
 export { Browser } from './browser';
+export { EventEmitter } from './eventEmitter';
+export { Options } from './options';
 export { Playback } from './playback';
 export { PlaybackEvents } from './playbackEvents';
+export { PlayerOptions, DEFAULTS as defaultPlayerOptions } from './playerOptions';
+export { PlayerSource } from './playerSource';
+export { HTML5_VIDEO_MIMETYPES, HTML5VideoPlayback } from './playbacks/html5Video';
 export declare const loadjs: typeof _loadjs;
 export declare const MimeTypeUtilities: typeof _mimeTypeUtilities;
 export declare const OptionUtilities: typeof _optionUtilities;

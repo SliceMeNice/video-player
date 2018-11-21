@@ -893,4 +893,4 @@ var MimeTypeUtilities = _mimeTypeUtilities;
 var OptionUtilities = _optionUtilities;
 var TypeUtilities = _typeUtilities;
 
-export { Player, loadjs, MimeTypeUtilities, OptionUtilities, TypeUtilities, HTML5_VIDEO_MIMETYPES, HTML5VideoPlayback, Browser, Playback, PlaybackEvents };
+export { Player, loadjs, MimeTypeUtilities, OptionUtilities, TypeUtilities, Browser, EventEmitter, Playback, PlaybackEvents, DEFAULTS as defaultPlayerOptions, HTML5_VIDEO_MIMETYPES, HTML5VideoPlayback };

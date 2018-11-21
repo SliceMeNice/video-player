@@ -901,10 +901,12 @@ this.SliceMeNice.VideoPlayer = (function (exports) {
     exports.MimeTypeUtilities = MimeTypeUtilities;
     exports.OptionUtilities = OptionUtilities;
     exports.TypeUtilities = TypeUtilities;
+    exports.Browser = Browser;
+    exports.EventEmitter = EventEmitter;
+    exports.Playback = Playback;
+    exports.defaultPlayerOptions = DEFAULTS;
     exports.HTML5_VIDEO_MIMETYPES = HTML5_VIDEO_MIMETYPES;
     exports.HTML5VideoPlayback = HTML5VideoPlayback;
-    exports.Browser = Browser;
-    exports.Playback = Playback;
 
     return exports;
 
