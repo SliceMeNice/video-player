@@ -4,6 +4,9 @@
 
 ## Release History
 
+__1.2.0__
+  * Exposed more re-usable types, like EventEmitter, Options, PlayerOptions, PlayerSource, etc.
+
 __1.1.0__
   * Removed not-yet ready fullscreen API.
   * Exposed MimeTypeUtilities, OptionUtilities, and TypeUtilities for plugins.

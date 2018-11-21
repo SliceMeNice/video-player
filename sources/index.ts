@@ -124,10 +124,16 @@ export class Player extends EventEmitter {
 	}
 }
 
-export { HTML5_VIDEO_MIMETYPES, HTML5VideoPlayback } from './playbacks/html5Video';
 export { Browser } from './browser';
+export { EventEmitter } from './eventEmitter';
+export { Options } from './options';
 export { Playback } from './playback';
 export { PlaybackEvents } from './playbackEvents';
+export { PlayerOptions, DEFAULTS as defaultPlayerOptions } from './playerOptions';
+export { PlayerSource } from './playerSource';
+
+export { HTML5_VIDEO_MIMETYPES, HTML5VideoPlayback } from './playbacks/html5Video';
+
 export const loadjs = _loadjs;
 export const MimeTypeUtilities = _mimeTypeUtilities;
 export const OptionUtilities = _optionUtilities;
