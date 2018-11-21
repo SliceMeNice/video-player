@@ -1,6 +1,5 @@
 import { PlayerOptions } from "./playerOptions";
 import { PlayerSource } from "./playerSource";
-import { Player } from "./index";
 import { EventEmitter } from './eventEmitter';
 import { PlaybackEvents } from './playbackEvents';
 
