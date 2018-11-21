@@ -1,6 +1,6 @@
 {
   "name": "@slicemenice/video-player",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "A lightweight, extensible HTML5 video player",
   "main": "dist/videoPlayer.js",
   "module": "dist/videoPlayer.es.js",
@@ -35,5 +35,8 @@
     "rollup-plugin-typescript2": "0.17.2",
     "rollup-plugin-uglify": "6.0.0",
     "typescript": "3.1.6"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
