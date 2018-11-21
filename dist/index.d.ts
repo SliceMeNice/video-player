@@ -3,6 +3,9 @@ import { PlayerSource } from './playerSource';
 import { Playback } from './playback';
 import { EventEmitter } from './eventEmitter';
 import * as _loadjs from 'loadjs';
+import * as _mimeTypeUtilities from './utilities/mimeTypeUtilities';
+import * as _optionUtilities from './utilities/optionUtilities';
+import * as _typeUtilities from './utilities/typeUtilities';
 export declare class Player extends EventEmitter {
     protected videoElement: HTMLVideoElement;
     protected options: PlayerOptions;
@@ -23,3 +26,6 @@ export { Browser } from './browser';
 export { Playback } from './playback';
 export { PlaybackEvents } from './playbackEvents';
 export declare const loadjs: typeof _loadjs;
+export declare const MimeTypeUtilities: typeof _mimeTypeUtilities;
+export declare const OptionUtilities: typeof _optionUtilities;
+export declare const TypeUtilities: typeof _typeUtilities;

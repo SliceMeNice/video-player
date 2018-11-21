@@ -291,6 +291,10 @@ this.SliceMeNice.VideoPlayer = (function (exports) {
         return mimeTypes;
     }
 
+    var _mimeTypeUtilities = /*#__PURE__*/Object.freeze({
+        mimeTypesForUrl: mimeTypesForUrl
+    });
+
     var HTML5_VIDEO_MIMETYPES = {
         'mp4': ['avc1.42E01E', 'avc1.58A01E', 'avc1.4D401E', 'avc1.64001E', 'mp4v.20.8', 'mp4v.20.240', 'mp4a.40.2'].map(function (codec) { return 'video/mp4; codecs="' + codec + ', mp4a.40.2"'; }),
         'ogg': ['video/ogg; codecs="theora, vorbis"', 'video/ogg; codecs="dirac"', 'video/ogg; codecs="theora, speex"'],
@@ -322,54 +326,6 @@ this.SliceMeNice.VideoPlayer = (function (exports) {
         playbacks: [HTML5VideoPlayback],
         sources: []
     };
-
-    function isPlainObject(obj) {
-        // Detect obvious negatives
-        // Use toString instead of jQuery.type to catch host objects
-        if (!obj || obj.toString() !== '[object Object]') {
-            return false;
-        }
-        var proto = Object.getPrototypeOf(obj);
-        // Objects with no prototype (e.g., `Object.create( null )`) are plain
-        if (!proto) {
-            return true;
-        }
-        // Objects with prototype are plain if they were constructed by a global Object function
-        var Ctor = proto.hasOwnProperty('constructor') && proto.constructor;
-        return typeof Ctor === 'function' && Ctor.toString() === Object.toString();
-    }
-
-    function extendOptions(target) {
-        var options = [];
-        for (var _i = 1; _i < arguments.length; _i++) {
-            options[_i - 1] = arguments[_i];
-        }
-        options.forEach(function (option) {
-            if (option != null) {
-                // extend the base object
-                for (var name_1 in option) {
-                    var src = target[name_1];
-                    var copy = option[name_1];
-                    // prevent never-ending loop
-                    if (target === copy) {
-                        continue;
-                    }
-                    // recurse if we're merging plain objects or arrays
-                    if (copy && (isPlainObject(copy))) {
-                        var clone = src && isPlainObject(src) ? src : {};
-                        // never move original objects, clone them
-                        target[name_1] = extendOptions(clone, copy);
-                        // don't bring in undefined values
-                    }
-                    else if (copy !== undefined) {
-                        target[name_1] = copy;
-                    }
-                }
-            }
-        });
-        // return the modified object
-        return target;
-    }
 
     var commonjsGlobal = typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
 
@@ -674,6 +630,62 @@ this.SliceMeNice.VideoPlayer = (function (exports) {
         __moduleExports: loadjs_umd
     });
 
+    function isPlainObject(obj) {
+        // Detect obvious negatives
+        // Use toString instead of jQuery.type to catch host objects
+        if (!obj || obj.toString() !== '[object Object]') {
+            return false;
+        }
+        var proto = Object.getPrototypeOf(obj);
+        // Objects with no prototype (e.g., `Object.create( null )`) are plain
+        if (!proto) {
+            return true;
+        }
+        // Objects with prototype are plain if they were constructed by a global Object function
+        var Ctor = proto.hasOwnProperty('constructor') && proto.constructor;
+        return typeof Ctor === 'function' && Ctor.toString() === Object.toString();
+    }
+
+    var _typeUtilities = /*#__PURE__*/Object.freeze({
+        isPlainObject: isPlainObject
+    });
+
+    function extendOptions(target) {
+        var options = [];
+        for (var _i = 1; _i < arguments.length; _i++) {
+            options[_i - 1] = arguments[_i];
+        }
+        options.forEach(function (option) {
+            if (option != null) {
+                // extend the base object
+                for (var name_1 in option) {
+                    var src = target[name_1];
+                    var copy = option[name_1];
+                    // prevent never-ending loop
+                    if (target === copy) {
+                        continue;
+                    }
+                    // recurse if we're merging plain objects or arrays
+                    if (copy && (isPlainObject(copy))) {
+                        var clone = src && isPlainObject(src) ? src : {};
+                        // never move original objects, clone them
+                        target[name_1] = extendOptions(clone, copy);
+                        // don't bring in undefined values
+                    }
+                    else if (copy !== undefined) {
+                        target[name_1] = copy;
+                    }
+                }
+            }
+        });
+        // return the modified object
+        return target;
+    }
+
+    var _optionUtilities = /*#__PURE__*/Object.freeze({
+        extendOptions: extendOptions
+    });
+
     var Browser = /** @class */ (function () {
         function Browser() {
         }
@@ -880,9 +892,15 @@ this.SliceMeNice.VideoPlayer = (function (exports) {
         return Player;
     }(EventEmitter));
     var loadjs = _loadjs;
+    var MimeTypeUtilities = _mimeTypeUtilities;
+    var OptionUtilities = _optionUtilities;
+    var TypeUtilities = _typeUtilities;
 
     exports.Player = Player;
     exports.loadjs = loadjs;
+    exports.MimeTypeUtilities = MimeTypeUtilities;
+    exports.OptionUtilities = OptionUtilities;
+    exports.TypeUtilities = TypeUtilities;
     exports.HTML5_VIDEO_MIMETYPES = HTML5_VIDEO_MIMETYPES;
     exports.HTML5VideoPlayback = HTML5VideoPlayback;
     exports.Browser = Browser;
