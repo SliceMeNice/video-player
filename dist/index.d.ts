@@ -2,7 +2,6 @@ import { PlayerOptions } from './playerOptions';
 import { PlayerSource } from './playerSource';
 import { Playback } from './playback';
 import { EventEmitter } from './eventEmitter';
-import * as _loadjs from 'loadjs';
 import * as _mimeTypeUtilities from './utilities/mimeTypeUtilities';
 import * as _optionUtilities from './utilities/optionUtilities';
 import * as _typeUtilities from './utilities/typeUtilities';
@@ -29,7 +28,14 @@ export { PlaybackEvents } from './playbackEvents';
 export { PlayerOptions, DEFAULTS as defaultPlayerOptions } from './playerOptions';
 export { PlayerSource } from './playerSource';
 export { HTML5_VIDEO_MIMETYPES, HTML5VideoPlayback } from './playbacks/html5Video';
-export declare const loadjs: typeof _loadjs;
-export declare const MimeTypeUtilities: typeof _mimeTypeUtilities;
-export declare const OptionUtilities: typeof _optionUtilities;
-export declare const TypeUtilities: typeof _typeUtilities;
+export { AssetService } from './services/assetService';
+export declare namespace MimeTypeUtilities {
+    export import MimeTypeByExtension = _mimeTypeUtilities.MimeTypeByExtension;
+    export import mimeTypesForUrl = _mimeTypeUtilities.mimeTypesForUrl;
+}
+export declare namespace OptionUtilities {
+    export import extendOptions = _optionUtilities.extendOptions;
+}
+export declare namespace TypeUtilities {
+    export import isPlainObject = _typeUtilities.isPlainObject;
+}

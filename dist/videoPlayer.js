@@ -291,10 +291,6 @@ this.SliceMeNice.VideoPlayer = (function (exports) {
         return mimeTypes;
     }
 
-    var _mimeTypeUtilities = /*#__PURE__*/Object.freeze({
-        mimeTypesForUrl: mimeTypesForUrl
-    });
-
     var HTML5_VIDEO_MIMETYPES = {
         'mp4': ['avc1.42E01E', 'avc1.58A01E', 'avc1.4D401E', 'avc1.64001E', 'mp4v.20.8', 'mp4v.20.240', 'mp4a.40.2'].map(function (codec) { return 'video/mp4; codecs="' + codec + ', mp4a.40.2"'; }),
         'ogg': ['video/ogg; codecs="theora, vorbis"', 'video/ogg; codecs="dirac"', 'video/ogg; codecs="theora, speex"'],
@@ -327,309 +323,6 @@ this.SliceMeNice.VideoPlayer = (function (exports) {
         sources: []
     };
 
-    var commonjsGlobal = typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
-
-    function createCommonjsModule(fn, module) {
-    	return module = { exports: {} }, fn(module, module.exports), module.exports;
-    }
-
-    var loadjs_umd = createCommonjsModule(function (module, exports) {
-    (function(root, factory) {
-      {
-        module.exports = factory();
-      }
-    }(commonjsGlobal, function() {
-    /**
-     * Global dependencies.
-     * @global {Object} document - DOM
-     */
-
-    var devnull = function() {},
-        bundleIdCache = {},
-        bundleResultCache = {},
-        bundleCallbackQueue = {};
-
-
-    /**
-     * Subscribe to bundle load event.
-     * @param {string[]} bundleIds - Bundle ids
-     * @param {Function} callbackFn - The callback function
-     */
-    function subscribe(bundleIds, callbackFn) {
-      // listify
-      bundleIds = bundleIds.push ? bundleIds : [bundleIds];
-
-      var depsNotFound = [],
-          i = bundleIds.length,
-          numWaiting = i,
-          fn,
-          bundleId,
-          r,
-          q;
-
-      // define callback function
-      fn = function (bundleId, pathsNotFound) {
-        if (pathsNotFound.length) depsNotFound.push(bundleId);
-
-        numWaiting--;
-        if (!numWaiting) callbackFn(depsNotFound);
-      };
-
-      // register callback
-      while (i--) {
-        bundleId = bundleIds[i];
-
-        // execute callback if in result cache
-        r = bundleResultCache[bundleId];
-        if (r) {
-          fn(bundleId, r);
-          continue;
-        }
-
-        // add to callback queue
-        q = bundleCallbackQueue[bundleId] = bundleCallbackQueue[bundleId] || [];
-        q.push(fn);
-      }
-    }
-
-
-    /**
-     * Publish bundle load event.
-     * @param {string} bundleId - Bundle id
-     * @param {string[]} pathsNotFound - List of files not found
-     */
-    function publish(bundleId, pathsNotFound) {
-      // exit if id isn't defined
-      if (!bundleId) return;
-
-      var q = bundleCallbackQueue[bundleId];
-
-      // cache result
-      bundleResultCache[bundleId] = pathsNotFound;
-
-      // exit if queue is empty
-      if (!q) return;
-
-      // empty callback queue
-      while (q.length) {
-        q[0](bundleId, pathsNotFound);
-        q.splice(0, 1);
-      }
-    }
-
-
-    /**
-     * Execute callbacks.
-     * @param {Object or Function} args - The callback args
-     * @param {string[]} depsNotFound - List of dependencies not found
-     */
-    function executeCallbacks(args, depsNotFound) {
-      // accept function as argument
-      if (args.call) args = {success: args};
-
-      // success and error callbacks
-      if (depsNotFound.length) (args.error || devnull)(depsNotFound);
-      else (args.success || devnull)(args);
-    }
-
-
-    /**
-     * Load individual file.
-     * @param {string} path - The file path
-     * @param {Function} callbackFn - The callback function
-     */
-    function loadFile(path, callbackFn, args, numTries) {
-      var doc = document,
-          async = args.async,
-          maxTries = (args.numRetries || 0) + 1,
-          beforeCallbackFn = args.before || devnull,
-          pathStripped = path.replace(/^(css|img)!/, ''),
-          isCss,
-          e;
-
-      numTries = numTries || 0;
-
-      if (/(^css!|\.css$)/.test(path)) {
-        isCss = true;
-
-        // css
-        e = doc.createElement('link');
-        e.rel = 'stylesheet';
-        e.href = pathStripped; //.replace(/^css!/, '');  // remove "css!" prefix
-      } else if (/(^img!|\.(png|gif|jpg|svg)$)/.test(path)) {
-        // image
-        e = doc.createElement('img');
-        e.src = pathStripped;    
-      } else {
-        // javascript
-        e = doc.createElement('script');
-        e.src = path;
-        e.async = async === undefined ? true : async;
-      }
-
-      e.onload = e.onerror = e.onbeforeload = function (ev) {
-        var result = ev.type[0];
-
-        // Note: The following code isolates IE using `hideFocus` and treats empty
-        // stylesheets as failures to get around lack of onerror support
-        if (isCss && 'hideFocus' in e) {
-          try {
-            if (!e.sheet.cssText.length) result = 'e';
-          } catch (x) {
-            // sheets objects created from load errors don't allow access to
-            // `cssText`
-            result = 'e';
-          }
-        }
-
-        // handle retries in case of load failure
-        if (result == 'e') {
-          // increment counter
-          numTries += 1;
-
-          // exit function and try again
-          if (numTries < maxTries) {
-            return loadFile(path, callbackFn, args, numTries);
-          }
-        }
-
-        // execute callback
-        callbackFn(path, result, ev.defaultPrevented);
-      };
-
-      // add to document (unless callback returns `false`)
-      if (beforeCallbackFn(path, e) !== false) doc.head.appendChild(e);
-    }
-
-
-    /**
-     * Load multiple files.
-     * @param {string[]} paths - The file paths
-     * @param {Function} callbackFn - The callback function
-     */
-    function loadFiles(paths, callbackFn, args) {
-      // listify paths
-      paths = paths.push ? paths : [paths];
-
-      var numWaiting = paths.length,
-          x = numWaiting,
-          pathsNotFound = [],
-          fn,
-          i;
-
-      // define callback function
-      fn = function(path, result, defaultPrevented) {
-        // handle error
-        if (result == 'e') pathsNotFound.push(path);
-
-        // handle beforeload event. If defaultPrevented then that means the load
-        // will be blocked (ex. Ghostery/ABP on Safari)
-        if (result == 'b') {
-          if (defaultPrevented) pathsNotFound.push(path);
-          else return;
-        }
-
-        numWaiting--;
-        if (!numWaiting) callbackFn(pathsNotFound);
-      };
-
-      // load scripts
-      for (i=0; i < x; i++) loadFile(paths[i], fn, args);
-    }
-
-
-    /**
-     * Initiate script load and register bundle.
-     * @param {(string|string[])} paths - The file paths
-     * @param {(string|Function)} [arg1] - The bundleId or success callback
-     * @param {Function} [arg2] - The success or error callback
-     * @param {Function} [arg3] - The error callback
-     */
-    function loadjs(paths, arg1, arg2) {
-      var bundleId,
-          args;
-
-      // bundleId (if string)
-      if (arg1 && arg1.trim) bundleId = arg1;
-
-      // args (default is {})
-      args = (bundleId ? arg2 : arg1) || {};
-
-      // throw error if bundle is already defined
-      if (bundleId) {
-        if (bundleId in bundleIdCache) {
-          throw "LoadJS";
-        } else {
-          bundleIdCache[bundleId] = true;
-        }
-      }
-
-      // load scripts
-      loadFiles(paths, function (pathsNotFound) {
-        // execute callbacks
-        executeCallbacks(args, pathsNotFound);
-
-        // publish bundle load event
-        publish(bundleId, pathsNotFound);
-      }, args);
-    }
-
-
-    /**
-     * Execute callbacks when dependencies have been satisfied.
-     * @param {(string|string[])} deps - List of bundle ids
-     * @param {Object} args - success/error arguments
-     */
-    loadjs.ready = function ready(deps, args) {
-      // subscribe to bundle load event
-      subscribe(deps, function (depsNotFound) {
-        // execute callbacks
-        executeCallbacks(args, depsNotFound);
-      });
-
-      return loadjs;
-    };
-
-
-    /**
-     * Manually satisfy bundle dependencies.
-     * @param {string} bundleId - The bundle id
-     */
-    loadjs.done = function done(bundleId) {
-      publish(bundleId, []);
-    };
-
-
-    /**
-     * Reset loadjs dependencies statuses
-     */
-    loadjs.reset = function reset() {
-      bundleIdCache = {};
-      bundleResultCache = {};
-      bundleCallbackQueue = {};
-    };
-
-
-    /**
-     * Determine if bundle has already been defined
-     * @param String} bundleId - The bundle id
-     */
-    loadjs.isDefined = function isDefined(bundleId) {
-      return bundleId in bundleIdCache;
-    };
-
-
-    // export
-    return loadjs;
-
-    }));
-    });
-
-    var _loadjs = /*#__PURE__*/Object.freeze({
-        default: loadjs_umd,
-        __moduleExports: loadjs_umd
-    });
-
     function isPlainObject(obj) {
         // Detect obvious negatives
         // Use toString instead of jQuery.type to catch host objects
@@ -645,10 +338,6 @@ this.SliceMeNice.VideoPlayer = (function (exports) {
         var Ctor = proto.hasOwnProperty('constructor') && proto.constructor;
         return typeof Ctor === 'function' && Ctor.toString() === Object.toString();
     }
-
-    var _typeUtilities = /*#__PURE__*/Object.freeze({
-        isPlainObject: isPlainObject
-    });
 
     function extendOptions(target) {
         var options = [];
@@ -681,10 +370,6 @@ this.SliceMeNice.VideoPlayer = (function (exports) {
         // return the modified object
         return target;
     }
-
-    var _optionUtilities = /*#__PURE__*/Object.freeze({
-        extendOptions: extendOptions
-    });
 
     var Browser = /** @class */ (function () {
         function Browser() {
@@ -790,6 +475,81 @@ this.SliceMeNice.VideoPlayer = (function (exports) {
         return Browser;
     }());
 
+    var AssetService = /** @class */ (function () {
+        function AssetService() {
+        }
+        AssetService.loadBundle = function (bundleId, options) {
+            if (!this.bundles.hasOwnProperty(bundleId)) {
+                throw new Error('Bundle is not defined');
+            }
+            if (!this.bundleResultCache[bundleId]) {
+                this.bundleResultCache[bundleId] = this.loadFiles(this.bundles[bundleId], options);
+            }
+            return this.bundleResultCache[bundleId];
+        };
+        AssetService.loadFile = function (path, options) {
+            return new Promise(function (resolve, reject) {
+                options = extendOptions({}, {
+                    async: true,
+                    beforeLoad: function () { }
+                }, options || {});
+                var element;
+                // remove "css!" or "img!" prefix
+                var pathStripped = path.replace(/^(css|img)!/, '');
+                if (/(^css!|\.css$)/.test(path)) {
+                    element = document.createElement('link');
+                    element.rel = 'stylesheet';
+                    element.href = pathStripped;
+                }
+                else if (/(^img!|\.(png|gif|jpg|svg)$)/.test(path)) {
+                    element = document.createElement('img');
+                    element.src = pathStripped;
+                }
+                else {
+                    element = document.createElement('script');
+                    element.src = path;
+                    element.async = options.async;
+                }
+                element.addEventListener('error', function (event) {
+                    reject(new Error("Failed to load asset: " + pathStripped));
+                }, {
+                    once: true
+                });
+                element.addEventListener('beforeload', function (event) {
+                    if (event.defaultPrevented) {
+                        reject(new Error("Failed to load asset: " + pathStripped + " (BLOCKED)"));
+                    }
+                }, {
+                    once: true
+                });
+                element.addEventListener('load', function (event) {
+                    resolve();
+                }, {
+                    once: true
+                });
+                // add to document (unless callback returns `false`)
+                if (options.beforeLoad(path, element) !== false) {
+                    document.head.appendChild(element);
+                }
+            });
+        };
+        AssetService.loadFiles = function (paths, options) {
+            var _this = this;
+            return Promise.all(paths.map(function (path) {
+                return _this.loadFile(path, options);
+            }));
+        };
+        AssetService.registerBundle = function (bundleId, paths) {
+            if (this.bundles.hasOwnProperty(bundleId)) {
+                throw new Error('Bundle is already defined');
+            }
+            this.bundles[bundleId] = paths;
+        };
+        AssetService.bundles = {};
+        AssetService.bundleResultCache = {};
+        return AssetService;
+    }());
+
     var Player = /** @class */ (function (_super) {
         __extends(Player, _super);
         function Player(videoElement, options) {
@@ -891,22 +651,24 @@ this.SliceMeNice.VideoPlayer = (function (exports) {
         };
         return Player;
     }(EventEmitter));
-    var loadjs = _loadjs;
-    var MimeTypeUtilities = _mimeTypeUtilities;
-    var OptionUtilities = _optionUtilities;
-    var TypeUtilities = _typeUtilities;
+    (function (MimeTypeUtilities) {
+        MimeTypeUtilities.mimeTypesForUrl = mimeTypesForUrl;
+    })(exports.MimeTypeUtilities || (exports.MimeTypeUtilities = {}));
+    (function (OptionUtilities) {
+        OptionUtilities.extendOptions = extendOptions;
+    })(exports.OptionUtilities || (exports.OptionUtilities = {}));
+    (function (TypeUtilities) {
+        TypeUtilities.isPlainObject = isPlainObject;
+    })(exports.TypeUtilities || (exports.TypeUtilities = {}));
 
     exports.Player = Player;
-    exports.loadjs = loadjs;
-    exports.MimeTypeUtilities = MimeTypeUtilities;
-    exports.OptionUtilities = OptionUtilities;
-    exports.TypeUtilities = TypeUtilities;
     exports.Browser = Browser;
     exports.EventEmitter = EventEmitter;
     exports.Playback = Playback;
     exports.defaultPlayerOptions = DEFAULTS;
     exports.HTML5_VIDEO_MIMETYPES = HTML5_VIDEO_MIMETYPES;
     exports.HTML5VideoPlayback = HTML5VideoPlayback;
+    exports.AssetService = AssetService;
 
     return exports;
 
