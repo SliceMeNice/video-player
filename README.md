@@ -4,6 +4,9 @@
 
 ## Release History
 
+__1.3.0__
+  * Added AssetService, and changes structure of exposing MimeTypeUtilities, OptionUtilities, and TypeUtilities.
+
 __1.2.0__
   * Exposed more re-usable types, like EventEmitter, Options, PlayerOptions, PlayerSource, etc.
 
